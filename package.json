@@ -35,7 +35,8 @@
     "node": ">= 0.12.0"
   },
   "scripts": {
-    "test": "mocha --reporter spec test"
+    "test": "mocha --reporter spec test",
+    "test-shippable": "mkdir -p shippable/testresults && mocha --reporter xunit test > shippable/testresults/result.xml"
   },
   "devDependencies": {
     "mocha": "^2.2.5",
