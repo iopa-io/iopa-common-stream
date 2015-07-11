@@ -1,0 +1,44 @@
+{
+  "name": "iopa-common-stream",
+  "main": "src/iopaStream.js",
+  "description": "iopa-common-stream is a core utility library to create iopa.Body streams",
+  "author": "IOPA",
+  "maintainers": [
+    {
+      "name": "iopa",
+      "email": "build@iopa.io"
+    }
+  ],
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iopa-source/iopa-common-stream.git"
+  },
+  "dependencies": {
+    "bl": "*"
+  },
+  "keywords": [
+    "limerun",
+    "iopa",
+    "stream",
+    "middleware",
+    "promise",
+    "framework"
+  ],
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec test"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^7.0.2"
+  }
+}
