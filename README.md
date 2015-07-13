@@ -1,4 +1,4 @@
-# [![IOPA](http://iopa.io/iopa.png)](http://iopa.io)<br> iopa-server 
+# [![IOPA](http://iopa.io/iopa.png)](http://iopa.io)<br> iopa-common-stream 
 
 [![Build Status](https://api.shippable.com/projects/55a1607dedd7f2c052682a4d/badge?branchName=master)](https://app.shippable.com/projects/55a1607dedd7f2c052682a4d) 
 [![IOPA](https://img.shields.io/badge/iopa-middleware-99cc33.svg?style=flat-square)](http://iopa.io)
