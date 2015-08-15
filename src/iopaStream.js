@@ -154,9 +154,10 @@ OutgoingMultiSendStream.prototype._write = function write(data, encoding, callba
  
   if (this._counter === 16777215)
     this._counter = 1;
-
-  this.emit('data', data);
+  
   this.lastData = data;
+  this.emit('data', data);
+
   callback();
 };
 
