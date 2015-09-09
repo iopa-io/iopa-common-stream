@@ -13,7 +13,7 @@ Written in plain javascript for maximum portability to constrained devices
 
 ## Status
 
-Working beta, not for production servers
+Working prototype
 
 Includes:
 
