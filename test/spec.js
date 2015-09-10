@@ -16,6 +16,7 @@
  
 var iopaStream = require('../src/iopaStream.js');
 var should = require('should');
+var assert = require('assert');
 
 describe('#IncomingMessageStream()', function() {
      it('should have append function', function() {
@@ -41,7 +42,13 @@ describe('#OutgoingStream()', function() {
     });
     
      it('should have toBuffer function', function() {
-        body.toBuffer().should.equal(buf);
+         
+         var buf2 = body.toBuffer();
+         
+         // use assert.deepEqual instead of should.equal due to node.js 4.0.0 change in buffers
+         //buf2.should.equal(buf);
+         assert.deepEqual(buf2, buf);
+        
     });
 });
 
