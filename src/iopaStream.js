@@ -56,8 +56,8 @@ module.exports.IncomingMessageStream = IncomingMessageStream;
  * @class OutgoingDuplexStream
  * @constructor
  */
-function OutgoingStream() {
-  BufferList.call(this);
+function OutgoingStream(buf) {
+  BufferList.call(this, buf);
   this._firstwrite = false;
  }
 
