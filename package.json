@@ -10,7 +10,7 @@
       "email": "build@iopa.io"
     }
   ],
-  "version": "1.0.14",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/iopa-io/iopa-common-stream.git"
@@ -31,11 +31,12 @@
   },
   "scripts": {
     "test": "mocha --reporter spec test",
+    "quick": "git add . -A && git commit -m 'dev test' && npm version patch && npm publish",
     "typings": "tsd reinstall --overwrite --clean --config tools/tsd.json && tsd link"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "mocha-junit-reporter": "latest",
-    "should": "latest"
+    "mocha": "^2.3.2",
+    "mocha-junit-reporter": "^1.6.1",
+    "should": "^7.1.0"
   }
 }
