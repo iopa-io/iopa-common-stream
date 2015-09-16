@@ -27,26 +27,18 @@ var BufferList = require('bl');
  * @constructor
  */
 function IncomingMessageStream() {
-  Readable.call(this)
-  this._lastId = 0
+  BufferList.call(this)
 }
 
-util.inherits(IncomingMessageStream, Readable);
+util.inherits(IncomingMessageStream, BufferList);
 
-IncomingMessageStream.prototype.append = function(buf) {
-  if (!this.readable)
-    return;
+IncomingMessageStream.prototype.toBuffer = function() {
+  return this.slice();
+}
 
-  this.push(buf);
-};
-
-IncomingMessageStream.prototype.close = function() {
-  this.push(null);
-  this.emit('finish');
-};
-
-// nothing to do, data will be pushed from the server
-IncomingMessageStream.prototype._read = function() {}
+IncomingMessageStream.prototype.toString = function() {
+   return this.slice().toString();
+}
 
 module.exports.IncomingMessageStream = IncomingMessageStream;
 
