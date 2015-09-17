@@ -26,6 +26,36 @@ var BufferList = require('bl');
  * @class IncomingMessagetream
  * @constructor
  */
+function IncomingStream() {
+  Readable.call(this)
+  this._lastId = 0
+}
+
+util.inherits(IncomingStream, Readable);
+
+IncomingStream.prototype.append = function(buf) {
+  if (!this.readable)
+    return;
+
+  this.push(buf);
+};
+
+IncomingStream.prototype.close = function() {
+  this.push(null);
+  this.emit('finish');
+};
+
+// nothing to do, data will be pushed from the server
+IncomingStream.prototype._read = function() {}
+
+module.exports.IncomingStream = IncomingStream;
+
+/**
+ * Represents an IOPA Incoming Message Body 
+ *
+ * @class IncomingMessagetream
+ * @constructor
+ */
 function IncomingMessageStream() {
   BufferList.call(this)
 }
