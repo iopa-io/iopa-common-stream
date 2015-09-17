@@ -26,6 +26,14 @@ describe('#IncomingMessageStream()', function() {
     });
 });
 
+describe('#IncomingStream()', function() {
+     it('should have append function', function() {
+       var body = new iopaStream.IncomingStream();
+       var buf = new Buffer('test');
+       body.append(buf.slice());
+    });
+});
+
 describe('#OutgoingStream()', function() {
        var body;
         var buf;
