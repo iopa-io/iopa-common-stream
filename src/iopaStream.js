@@ -73,6 +73,37 @@ IncomingMessageStream.prototype.toString = function() {
 module.exports.IncomingMessageStream = IncomingMessageStream;
 
 /**
+ * Represents an IOPA Incoming Message Body for objects
+ *
+ * @class IncomingObjectStream
+ * @constructor
+ */
+function IncomingObjectStream() {
+  Readable.call(this, { objectMode : true });
+  this.objs
+}
+
+util.inherits(IncomingObjectStream, Readable);
+
+IncomingObjectStream.prototype._read = function () {
+};
+
+IncomingObjectStream.prototype.append = function(obj) {
+  if (!this.readable)
+    return;
+
+  this.push(obj);
+};
+
+IncomingObjectStream.prototype.close = function() {
+  this.push(null);
+  this.emit('finish');
+};
+
+module.exports.IncomingObjectStream = IncomingObjectStream;
+
+
+/**
  * Represents an IOPA Outgoing Message Body for send-once protocols (e.g., HTTP Request)
  *
  * @class OutgoingDuplexStream
