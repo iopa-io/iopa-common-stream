@@ -18,6 +18,7 @@ var util = require('util');
 var stream = require('stream');
 var Readable  = stream.Readable;
 var Writable = stream.Writable;
+var Transform = stream.Transform;
 var BufferList = require('bl');
 
 /**
@@ -102,21 +103,20 @@ IncomingObjectStream.prototype.close = function() {
 
 module.exports.IncomingObjectStream = IncomingObjectStream;
 
-
 /**
  * Represents an IOPA Outgoing Message Body for send-once protocols (e.g., HTTP Request)
  *
  * @class OutgoingDuplexStream
  * @constructor
  */
-function OutgoingStream(buf) {
+function OutgoingMessageStream(buf) {
   BufferList.call(this, buf);
   this._firstwrite = false;
  }
 
-util.inherits(OutgoingStream, BufferList);
+util.inherits(OutgoingMessageStream, BufferList);
 
-OutgoingStream.prototype._write = function (chunk, encoding, done) {
+OutgoingMessageStream.prototype._write = function (chunk, encoding, done) {
   if (!this._firstwrite)
   {
     this._firstwrite = true;
@@ -126,12 +126,54 @@ OutgoingStream.prototype._write = function (chunk, encoding, done) {
   BufferList.prototype._write.call(this, chunk, encoding, done);
 };
 
-OutgoingStream.prototype.toBuffer = function() {
+OutgoingMessageStream.prototype.toBuffer = function() {
   return this.slice();
 }
 
-OutgoingStream.prototype.toString = function() {
+OutgoingMessageStream.prototype.toString = function() {
    return this.slice().toString();
+};
+
+module.exports.OutgoingMessageStream = OutgoingMessageStream;
+
+/**
+ * Represents an IOPA Outgoing Message Body for send-once protocols (e.g., HTTP Request)
+ *
+ * @class OutgoingDuplexStream
+ * @constructor
+ */
+function OutgoingStream(buf) {
+  Transform.call(this);
+    this._firstwrite = false;
+    
+  if (buf)
+    this.write(buf);
+ }
+
+util.inherits(OutgoingStream, Transform);
+
+OutgoingStream.prototype._transform = function (chunk, enc, done) {
+  if (!this._firstwrite)
+  {
+    this._firstwrite = true;
+     this.emit('start');
+  }
+  
+  var buffer = (Buffer.isBuffer(chunk)) ?
+    chunk :
+    new Buffer(chunk, enc);
+    
+  this.push(buffer);
+  done();
+};
+
+
+OutgoingStream.prototype.toBuffer = function() {
+  return this.read();
+}
+
+OutgoingStream.prototype.toString = function() {
+   return this.read().toString();
 };
 
 module.exports.OutgoingStream = OutgoingStream;
