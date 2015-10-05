@@ -21,6 +21,22 @@ var Writable = stream.Writable;
 var Transform = stream.Transform;
 var BufferList = require('bl');
 
+Writable.prototype.endAsync = function endAsync(chunk, encoding) {
+  var self= this;
+  return new Promise(function(resolve, reject){
+        self.once("finish", function(){process.nextTick(resolve); });
+        self.end(chunk, encoding);
+  });
+}
+
+Transform.prototype.endAsync = function endAsync(chunk, encoding) {
+  var self= this;
+  return new Promise(function(resolve, reject){
+        self.once("end", function(){process.nextTick(resolve); });
+        self.end(chunk, encoding);
+  });
+}
+
 /**
  * Represents an IOPA Incoming Message Body 
  *
@@ -145,35 +161,21 @@ module.exports.OutgoingMessageStream = OutgoingMessageStream;
 function OutgoingStream(buf) {
   Transform.call(this);
     this._firstwrite = false;
-    
-  if (buf)
+    if (buf)
     this.write(buf);
  }
 
 util.inherits(OutgoingStream, Transform);
 
-OutgoingStream.prototype._transform = function (chunk, enc, done) {
+OutgoingStream.prototype._transform = function(chunk, encoding, cb) {
   if (!this._firstwrite)
-  {
-    this._firstwrite = true;
-     this.emit('start');
-  }
-  
-  var buffer = (Buffer.isBuffer(chunk)) ?
-    chunk :
-    new Buffer(chunk, enc);
-    
-  this.push(buffer);
-  done();
-};
-
-
-OutgoingStream.prototype.toBuffer = function() {
-  return this.read();
-}
-
-OutgoingStream.prototype.toString = function() {
-   return this.read().toString();
+    {
+      this._firstwrite = true;
+      this.emit("start");
+    }
+   
+  this.push(chunk, encoding);
+  cb();
 };
 
 module.exports.OutgoingStream = OutgoingStream;

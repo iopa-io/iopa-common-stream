@@ -45,13 +45,31 @@ describe('#OutgoingStream()', function() {
           body.write(buf, 'utf8', done);
       })
       
-     it('should have toString function', function() {
-         body.toString().should.equal('test');
-    });
-    
-     it('should have toBuffer function', function() {
+     it('should  pass through data unchanged', function() {
          
-         var buf2 = body.toBuffer();
+         var buf2 = body.read();
+         
+         // use assert.deepEqual instead of should.equal due to node.js 4.0.0 change in buffers
+         //buf2.should.equal(buf);
+         assert.deepEqual(buf2, buf);
+        
+    });
+});
+
+describe('#OutgoingMessageStream()', function() {
+       var body;
+        var buf;
+        
+      beforeEach(function(done){
+           body = new iopaStream.OutgoingMessageStream();
+           buf = new Buffer('test');
+   
+          body.write(buf, 'utf8', done);
+      })
+      
+     it('should  pass through data unchanged', function() {
+         
+         var buf2 = body.read();
          
          // use assert.deepEqual instead of should.equal due to node.js 4.0.0 change in buffers
          //buf2.should.equal(buf);
@@ -66,7 +84,7 @@ describe('#OutgoingStreamTransform()', function() {
         
       beforeEach(function(done){
           
-           body = new iopaStream.OutgoingStream();
+           body = new iopaStream.OutgoingMessageStream();
            buf = new Buffer('test');
    
            body2 = new iopaStream.OutgoingStreamTransform(
